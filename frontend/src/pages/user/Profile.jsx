@@ -5,6 +5,7 @@ import {
   ChevronDown, LogOut, ShieldCheck, Menu
 } from 'lucide-react';
 import { axiosInstance } from '../../lib/axios';
+import toast from 'react-hot-toast';
 
 const Profile = () => {
   const [userData, setUserData] = useState(null);
@@ -19,7 +20,15 @@ const Profile = () => {
         const userId = userJson ? JSON.parse(userJson).id : null;
         if (!userId) return;
         const response = await axiosInstance.get(`/user/${userId}`);
+        console.log(response)
         setUserData(response.data);
+        toast("Please complete your profile details!", {
+    icon: 'ℹ️',
+    duration: 4000,
+    style: {
+      borderTop: '4px solid #3b82f6', // Info Blue
+    },
+  });
       } catch (err) {
         console.error("Profile Load Error:", err);
       } finally {
