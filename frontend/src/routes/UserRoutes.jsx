@@ -11,10 +11,14 @@ import MyWallet from "../components/profile/MyWallet";
 import AccountSettings from "../components/profile/AccountSettings";
 import ServiceDetail from "../pages/user/ServiceDetail";
 import AllServices from "../pages/user/AllServices";
+import BookingPage from "../pages/user/BookingPage";
+import Navbar from "../components/common/Navbar";
+import ChatPage from "../pages/user/ChatPage";
 
 const UserRoutes = () => {
   const userRole = localStorage.getItem("role");
   return (
+
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/contact" element={<ContactForm />} />
@@ -34,11 +38,15 @@ const UserRoutes = () => {
           userRole ? <ServiceDetail /> : <Navigate to="/login" replace />
         }
       />
+      <Route path="/book/:taskerId" element={<BookingPage />} />
       <Route
         path="/services"
         element={ <AllServices />}
       />
-      <Route path="/profile" element={<div>User Profile</div>} />
+       <Route
+        path="/chat"
+        element={ <ChatPage />}
+      />
       <Route path="*" element={<div>User 404 Not Found</div>} />
     </Routes>
   );

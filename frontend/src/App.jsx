@@ -13,6 +13,7 @@ import 'aos/dist/aos.css'; // Import the CSS
 import { useAuth } from './context/AuthContext'
 import UserRoutes from './routes/UserRoutes'
 import { Toaster } from 'react-hot-toast';
+import Navbar from './components/common/Navbar'
 
 function App() {
   const {userRole}=useAuth();
@@ -54,9 +55,11 @@ function App() {
     },
   }}
 />
+{/* <Navbar /> */}
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+
           {userRole === "hirer" && <Route path="/*" element={<UserRoutes />} />}
           {userRole === "admin" && <Route path="/*" element={<AdminRoutes />} />}
           {userRole === "tasker" && <Route path="/*" element={<TaskerRoutes />} />}
