@@ -18,7 +18,6 @@ export default function AboutUs() {
       The 'isolate' class ensures that margins inside this page stay inside this page.
     */
     <div className="bg-[#050505] min-h-screen font-['Inter'] flex flex-col isolate overflow-x-hidden">
-      <Navbar />
 
       {/* FIX 2: We use a 'main' tag with 'flex-grow'. 
         The 'pb-[10vh]' ensures there is always extra background space at the bottom 
