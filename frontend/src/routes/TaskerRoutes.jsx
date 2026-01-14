@@ -2,6 +2,12 @@ import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import TaskerLayout from '../components/Tasker/TaskerLayout'
 import TaskerDashboard from '../components/Tasker/TaskerDashboard'
+import TaskerTasks from '../pages/tasker/TaskerTasks'
+import TaskerSchedule from '../pages/tasker/TaskerSchedule'
+import TaskerRequests from '../pages/tasker/TaskerRequests'
+import TaskerMessages from '../pages/tasker/TaskerMessages'
+import TaskerEarnings from '../pages/tasker/TaskerEarnings'
+import TaskerSettings from '../pages/tasker/TaskerSettings'
 
 const TaskerRoutes = () => {
   return (
@@ -11,12 +17,12 @@ const TaskerRoutes = () => {
         <Route index element={<TaskerDashboard/>} /> 
         
         {/* Other pages will load here later */}
-        <Route path="tasks" element={<div className="p-8 text-xl">Tasks Page Coming Soon...</div>} />
-        <Route path="schedule" element={<div className="p-8 text-xl">Earnings Page Coming Soon...</div>} />
-        <Route path="requests" element={<div className="p-8 text-xl">Earnings Page Coming Soon...</div>} />
-        <Route path="messages" element={<div className="p-8 text-xl">Earnings Page Coming Soon...</div>} />
-        <Route path="earnings" element={<div className="p-8 text-xl">Earnings Page Coming Soon...</div>} />
-        <Route path="settings" element={<div className="p-8 text-xl">Earnings Page Coming Soon...</div>} />
+        <Route path="tasks" element={<TaskerTasks/>} />
+        <Route path="schedule" element={<TaskerSchedule/>} />
+        <Route path="requests" element={<TaskerRequests/>} />
+        <Route path="messages" element={<TaskerMessages/>} />
+        <Route path="earnings" element={<TaskerEarnings/>} />
+        <Route path="settings" element={<TaskerSettings/>} />
 
       </Route>
       <Route path="*" element={<div>Tasker 404 Not Found</div>} />

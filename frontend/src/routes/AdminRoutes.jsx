@@ -1,15 +1,32 @@
-import React from 'react'
-import { Route, Routes } from 'react-router-dom'
-import HomePage from '../pages/admin/HomePage'
+import React from "react";
+import { Route, Routes } from "react-router-dom";
+import AdminLayout from "../components/admin/AdminLayout";
+import AdminDashboard from "../pages/admin/AdminPage";
+import AdminUserManagement from "../pages/admin/UserManagement";
+import AdminFinancials from "../pages/admin/AdminFinancials";
+import AdminTaskerReview from "../pages/admin/TaskerReview";
+import AdminSystemLogs from "../pages/admin/AdminSystemLogs";
+import AdminSettings from "../pages/admin/AdminSettings";
+import AdminSupportTickets from "../pages/admin/AdminSupportTicket";
 
 const AdminRoutes = () => {
   return (
-     <Routes>
-        <Route path="/" element={<HomePage/>} />
-        <Route path="/profile" element={<div>Admin Profile</div>} />
-        <Route path="*" element={<div>User 404 Not Found</div>} />
-    </Routes>
-  )
-}
+    <Routes>
+      <Route path="/" element={<AdminLayout />}>
+        <Route index element={<AdminDashboard />} />
+        <Route path="/user-management" element={<AdminUserManagement />} />
+        <Route path="/financials" element={<AdminFinancials />} />
+        <Route path="/tasker-review" element={<AdminTaskerReview />} />
+        <Route path="/reports" element={<AdminDashboard />} />
+        <Route path="/system-logs" element={<AdminSystemLogs />} />
+        <Route path="/settings" element={<AdminSettings />} />
+        <Route path="/support-tickets" element={<AdminSupportTickets />} />
 
-export default AdminRoutes
+
+        <Route index element={<AdminDashboard />} />
+      </Route>
+    </Routes>
+  );
+};
+
+export default AdminRoutes;
