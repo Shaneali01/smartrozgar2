@@ -79,12 +79,12 @@ const HeroSection = () => {
             onClick={handleBookNow}
             className="w-full sm:w-auto px-12 py-5 bg-[#00D1D1] text-black font-black rounded-2xl shadow-[0_10px_40px_rgba(0,209,209,0.2)] hover:bg-[#00FFFF] transition-all transform hover:scale-105 active:scale-95 text-xs uppercase tracking-widest"
           >
-            Explore Services
+            Create Job Now
           </button>
 
           <button className="flex items-center gap-3 px-8 py-5 bg-white/5 border border-white/10 text-white rounded-2xl hover:bg-white/10 transition-all backdrop-blur-md text-xs font-bold uppercase tracking-widest">
             <Phone className="w-4 h-4 text-[#00D1D1]" />
-            Urgent Help
+            Direct Hire Professionals
           </button>
         </div>
 

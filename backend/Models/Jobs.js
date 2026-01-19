@@ -9,9 +9,14 @@ const jobSchema = new mongoose.Schema({
   tasker: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Tasker",
+    required: false,
+    default: null
+  },
+  jobType:{
+    type: String,
+    enum: ["direct", "public"],
     required: true
   },
-
   // Job details
   service: { type: String, required: true },   // Cleaning, Cooking
   address: {
@@ -30,10 +35,14 @@ const jobSchema = new mongoose.Schema({
     enum: ["pending", "accepted", "completed", "cancelled"],
     default: "pending"
   },
+  paymentScreenshots: [{ 
+    type: String,
+    required: false
+  }], // Arra
 
   paymentStatus: {
     type: String,
-    enum: ["unpaid", "paid", "refunded"],
+    enum: ["unpaid","unverified", "paid", "refunded"],
     default: "unpaid"
   },
 

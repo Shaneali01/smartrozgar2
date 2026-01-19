@@ -108,7 +108,7 @@ const Navbar = () => {
                       className="flex items-center space-x-3 px-4 py-3 text-sm text-gray-300 hover:bg-white/5 hover:text-[#00D1D1] transition"
                     >
                       <User className="w-4 h-4" />
-                      <span className="font-medium">My Profile</span>
+                      <span className="font-medium">My Dashboard</span>
                     </Link>
 
                     <button 

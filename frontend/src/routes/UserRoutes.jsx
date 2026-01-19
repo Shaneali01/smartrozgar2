@@ -14,6 +14,7 @@ import AllServices from "../pages/user/AllServices";
 import BookingPage from "../pages/user/BookingPage";
 import Navbar from "../components/common/Navbar";
 import ChatPage from "../pages/user/ChatPage";
+import JobCreationStepper from "../pages/user/CreateJob";
 
 const UserRoutes = () => {
   const userRole = localStorage.getItem("role");
@@ -47,6 +48,10 @@ const UserRoutes = () => {
        <Route
         path="/chat"
         element={ <ChatPage />}
+      />
+       <Route
+        path="/create-job"
+        element={ <JobCreationStepper />}
       />
       <Route path="*" element={<div>User 404 Not Found</div>} />
     </Routes>
