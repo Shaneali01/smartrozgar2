@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 import { 
   BarChart3, Users, DollarSign, ListChecks, Activity, Shield, 
-  Settings, MessageSquare, LogOut, Menu, X, Bell, FileText 
+  Settings, MessageSquare, LogOut, Menu, X, Bell, FileText, 
+  Gavel
 } from 'lucide-react';
 
 const AdminLayout = () => {
@@ -12,6 +13,7 @@ const AdminLayout = () => {
         { name: 'Dashboard', icon: BarChart3, path: '/', count: 0 },
         { name: 'Users Management', icon: Users, path: '/user-management', count: 0 },
         { name: 'Tasker Review', icon: ListChecks, path: '/tasker-review', count: 12 },
+        { name: 'Dispute Center', icon: Gavel, path: '/dispute-center', count: 1 },
         { name: 'Financials', icon: DollarSign, path: '/financials', count: 0 },
         { name: 'Reports & Analytics', icon: FileText, path: '/reports', count: 0 },
         { name: 'System Logs', icon: Activity, path: '/system-logs', count: 0 },

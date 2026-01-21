@@ -2,133 +2,127 @@
 import bcrypt from 'bcryptjs';
 import Tasker from "../../Models/Tasker.js";
 import Hirer from "../../Models/User.js";
-import express from "express"
-
-// SINGLE SIGNUP API FOR BOTH HIRER & TASKER
-const signup = async (req, res) => {
+export const signup = async (req, res) => {
   try {
     const {
-      role,                    // 'hirer' or 'tasker' — REQUIRED
+      role,         // 'hirer' or 'tasker'
       fullName,
-      phone,
+      phone,        // Received from frontend as 'phone'
       email,
       password,
       gender,
       age,
-      address,                 // { houseNo, street, landmark, city, state, pincode }
-      skills,                  // Only for tasker
-      hourlyRate               // Only for tasker
+      address,      // { city, state, pincode }
+      skills,       // Only for tasker
+      hourlyRate    // Only for tasker
     } = req.body;
 
-    // Validation
+    // 1. Basic Field Validation
     if (!role || !['hirer', 'tasker'].includes(role)) {
       return res.status(400).json({
         success: false,
-        message: "Role is required and must be 'hirer' or 'tasker'"
+        message: "Please select whether you are a Hirer or a Tasker."
       });
     }
 
-    if (!fullName || !phone || !password || !address?.city || !address?.state || !address?.pincode) {
+    // Check for nested address fields specifically to avoid the 400 error
+    if (!fullName || !phone || !password || !address?.city) {
       return res.status(400).json({
         success: false,
-        message: "Please fill all required fields"
+        message: "Required fields missing: Name, Phone, Password, and City are mandatory."
       });
     }
 
-    // Check if phone already exists in BOTH collections
+    // 2. Check if user already exists
+    // We check both collections because a phone number should be unique to the whole platform
     const existingHirer = await Hirer.findOne({ phoneNumber: phone });
     const existingTasker = await Tasker.findOne({ phoneNumber: phone });
+
     if (existingHirer || existingTasker) {
       return res.status(409).json({
         success: false,
-        message: "Phone number already registered"
+        message: "This phone number is already registered. Please login."
       });
     }
 
-    // Hash password
-    const hashedPassword = await bcrypt.hash(password, 12);
+    // 3. Hash Password
+    const salt = await bcrypt.genSalt(12);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
-    // COMMON FIELDS
+    // 4. Prepare Common Data structure for Mongoose
     const commonData = {
       fullName,
-      phoneNumber: phone,
-      email: email || null,
+      phoneNumber: phone, // Mapping 'phone' from req.body to 'phoneNumber' in Schema
+      email: email ? email.toLowerCase() : undefined,
       password: hashedPassword,
-      gender: gender || null,
+      gender: gender || "other",
       age: age ? parseInt(age) : null,
+      // Mapping the address array structure required by your schema
       address: [{
-        houseNo: address.houseNo || "",
-        street: address.street || "",
-        landmark: address.landmark || "",
         city: address.city,
-        state: address.state,
-        pincode: address.pincode,
+        state: address.state || "Punjab",
+        pincode: address.pincode || "00000",
         isDefault: true
       }],
       isPhoneVerified: false,
       isProfileComplete: false
     };
 
-    let user;
-    let message;
+    let newUser;
 
+    // 5. Role-Specific Logic
     if (role === 'hirer') {
-      // CREATE HIRER
-      user = await Hirer.create({
+      newUser = await Hirer.create({
         ...commonData,
         totalSpent: 0,
         walletBalance: 0
       });
-      message = "Hirer account created successfully!";
-
-    } else if (role === 'tasker') {
-      // CREATE TASKER
-      if (!skills || skills.length === 0) {
+    } else {
+      // Tasker Specific Validation
+      if (!skills || !Array.isArray(skills) || skills.length === 0) {
         return res.status(400).json({
           success: false,
-          message: "Please select at least one skill"
+          message: "Taskers must select at least one skill."
         });
       }
 
-      user = await Tasker.create({
+      newUser = await Tasker.create({
         ...commonData,
         skills,
-        hourlyRate: parseInt(hourlyRate) || 0,
+        hourlyRate: hourlyRate ? parseInt(hourlyRate) : 0,
         totalEarnings: 0,
         jobsCount: 0,
         rating: { average: 0, count: 0 },
-        isApproved: false,        // Admin must approve
+        isApproved: false, // Taskers usually need admin approval
         isActive: true
       });
-      message = "Tasker account created! Waiting for admin approval.";
     }
 
-    // SUCCESS RESPONSE
-    res.status(201).json({
+    // 6. Final Response
+    return res.status(201).json({
       success: true,
-      message,
+      message: role === 'tasker' ? "Registration successful! Pending admin approval." : "Account created successfully!",
       user: {
-        id: user._id,
-        fullName: user.fullName,
-        phone: user.phoneNumber,
-        role: role,
-        isApproved: role === 'tasker' ? user.isApproved : true
+        id: newUser._id,
+        fullName: newUser.fullName,
+        role: role
       }
     });
 
   } catch (error) {
-    console.error("Signup Error:", error);
-
+    console.error("SIGNUP_CONTROLLER_ERROR:", error);
+    
+    // Handle Mongoose Duplicate Key Error (e.g., Email unique constraint)
     if (error.code === 11000) {
       return res.status(409).json({
         success: false,
-        message: "Phone number already exists"
+        message: "Email or Phone number already exists in our records."
       });
     }
 
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
-      message: "Server error. Please try again later."
+      message: "Internal Server Error. Please try again later."
     });
   }
 };

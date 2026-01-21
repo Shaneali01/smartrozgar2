@@ -8,6 +8,7 @@ import AdminTaskerReview from "../pages/admin/TaskerReview";
 import AdminSystemLogs from "../pages/admin/AdminSystemLogs";
 import AdminSettings from "../pages/admin/AdminSettings";
 import AdminSupportTickets from "../pages/admin/AdminSupportTicket";
+import AdminDisputeCenter from "../pages/admin/AdminDisputeCenter";
 
 const AdminRoutes = () => {
   return (
@@ -21,6 +22,7 @@ const AdminRoutes = () => {
         <Route path="/system-logs" element={<AdminSystemLogs />} />
         <Route path="/settings" element={<AdminSettings />} />
         <Route path="/support-tickets" element={<AdminSupportTickets />} />
+        <Route path="/dispute-center" element={<AdminDisputeCenter />} />
 
 
         <Route index element={<AdminDashboard />} />
